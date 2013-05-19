@@ -1,0 +1,51 @@
+#commentator {
+	background: #fff;
+	border: 1px solid #eee;
+	box-shadow: 0 2px 5px rgba(0, 0, 0, .1);
+	font-family: arial;
+	width: 400px;
+
+	.comments {
+		padding: 10px 10px 5px;
+
+		.comment {
+			margin: 0 0 15px;
+		}
+
+		p { margin: 0; }
+
+		span {
+			color: #aaa;
+			display: block;
+			font-size: 10px;
+			margin-top: 3px;
+			text-align: right;
+		}
+	}
+
+	form {
+		margin: 0;
+		padding: 0 5px 5px;
+
+		textarea {
+			resize: none;
+			width: 100%;
+		}
+
+		button {
+			background: #333;
+			border: none;
+			color: #fff;
+			cursor: pointer;
+			display: block;
+			margin: 5px 0 0;
+			padding: 3px 0;
+			text-align: center;
+			text-shadow: 0 -1px 0 #000;
+			width: 100%;
+
+			&:hover { background: #555; }
+			&:active { background: #000; }
+		}
+	}
+}
