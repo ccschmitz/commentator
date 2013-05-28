@@ -5,14 +5,16 @@
   "version": "0.0.1",
   "keywords": [],
   "dependencies": {
-    "component/selectable": "*"
   },
   "development": {},
   "license": "MIT",
   "main": "index.js",
   "scripts": [
     "index.js",
-    "template.js"
+    "template.js",
+    "vendor/rangy-core.js",
+    "vendor/rangy-cssclassapplier.js",
+    "vendor/rangy-highlighter.js"
   ],
   "styles": [
     "commentator.css"
