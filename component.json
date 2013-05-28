@@ -1,0 +1,20 @@
+{
+  "name": "commentator",
+  "repo": "ccschmitz/commentator",
+  "description": "",
+  "version": "0.0.1",
+  "keywords": [],
+  "dependencies": {
+    "component/selectable": "*"
+  },
+  "development": {},
+  "license": "MIT",
+  "main": "index.js",
+  "scripts": [
+    "index.js",
+    "template.js"
+  ],
+  "styles": [
+    "commentator.css"
+  ]
+}
