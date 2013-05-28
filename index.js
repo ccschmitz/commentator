@@ -4,7 +4,7 @@ require('./vendor/rangy-highlighter');
 
 module.exports = Commentator;
 
-function Commentator(rootNodeId) {
+function Commentator() {
   var template = require('./template');
   var d = document,
       div = d.createElement('div');
