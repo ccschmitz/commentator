@@ -22,7 +22,7 @@ function Commentator() {
   highlighter.addClassApplier(classApplier);
   highlighter.deserialize('type:TextRange|457$668$1$someClass$')
 
-  d.body.onmouseup = function(e) {
+  d.getElementById('content').onmouseup = function(e) {
     var popover = d.getElementById('commentator');
     if (popover) {
       d.body.removeChild(templ);
