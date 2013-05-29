@@ -14,7 +14,8 @@
     "template.js",
     "vendor/rangy-core.js",
     "vendor/rangy-cssclassapplier.js",
-    "vendor/rangy-highlighter.js"
+    "vendor/rangy-highlighter.js",
+    "vendor/rangy-textrange.js"
   ],
   "styles": [
     "commentator.css"
