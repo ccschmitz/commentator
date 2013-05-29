@@ -6,17 +6,19 @@ require('./vendor/rangy-textrange');
 module.exports = Commentator;
 
 function Commentator() {
-  var template = require('./template');
-  var d = document,
+  var template = require('./template'),
+      d = document,
       div = d.createElement('div');
 
+  div.id = 'commentator';
   div.innerHTML = template;
-  var templ = div.firstChild;
+  var templ = div;
 
   rangy.init();
 
-  var highlighter = rangy.createHighlighter(document, 'TextRange');
-  var classApplier = rangy.createCssClassApplier('someClass', {ignoreWhiteSpace: false, normalize: true})
+  var highlighter = rangy.createHighlighter(document, 'TextRange'),
+      classApplier = rangy.createCssClassApplier('someClass', {ignoreWhiteSpace: false, normalize: true});
+
   highlighter.addClassApplier(classApplier);
   highlighter.deserialize('type:TextRange|457$668$1$someClass$')
 
