@@ -20,7 +20,7 @@ function Commentator() {
       classApplier = rangy.createCssClassApplier('someClass', {ignoreWhiteSpace: false, normalize: true});
 
   highlighter.addClassApplier(classApplier);
-  highlighter.deserialize('type:TextRange|457$668$1$someClass$')
+  highlighter.deserialize('type:TextRange|457$668$1$someClass$');
 
   d.getElementById('content').onmouseup = function(e) {
     var popover = d.getElementById('commentator');
