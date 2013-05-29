@@ -1,43 +1,78 @@
-.someClass {
-  background-color: #ddd;
-}
-
 #commentator {
   background: #fff;
-  border: 1px solid #eeeeee;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-  font-family: arial;
+  border: 1px solid #eee;
+  border-radius: 5px;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.08);
+  font-family: helvetica, arial, sans-serif;
+  overflow: none;
   width: 400px; }
-  #commentator .comments {
-    padding: 10px 10px 5px; }
-    #commentator .comments .comment {
-      margin: 0 0 15px; }
-    #commentator .comments p {
+  #commentator .comment {
+    background: #F3F3F3;
+    box-shadow: 0 1px 0 rgba(255, 255, 255, 0.75) inset, 0 -1px 0 rgba(0, 0, 0, 0.05) inset;
+    margin: 0;
+    padding: 8px 10px 10px 40px;
+    position: relative; }
+    #commentator .comment:first-of-type {
+      box-shadow: 0 -1px 0 rgba(0, 0, 0, 0.05) inset; }
+    #commentator .comment p {
+      color: #444;
+      font-size: 11px;
+      text-shadow: 0 1px 0 #fff;
       margin: 0; }
-    #commentator .comments span {
-      color: #aaa;
+    #commentator .comment .comment-author {
+      color: #333;
       display: block;
-      font-size: 10px;
-      margin-top: 3px;
-      text-align: right; }
+      font-size: 13px;
+      font-weight: bold;
+      margin: 0 0 4px;
+      text-decoration: none;
+      text-shadow: 0 1px 0 #fff; }
+      #commentator .comment .comment-author:hover, #commentator .comment .comment-author:focus {
+        color: #777; }
+      #commentator .comment .comment-author:active {
+        color: #000; }
+  #commentator .comment-avatar {
+    box-shadow: 0 1px 0 rgba(255, 255, 255, 0.5);
+    border-radius: 50%;
+    height: 25px;
+    position: absolute;
+    top: 8px;
+    left: 8px;
+    width: 25px; }
   #commentator form {
     margin: 0;
-    padding: 0 5px 5px; }
+    padding: 0; }
     #commentator form textarea {
+      background: #fff;
+      border: none;
+      border-radius: 0 0 5px 5px;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05) inset;
+      box-sizing: border-box;
+      color: #999;
+      margin: 0;
+      min-height: 40px;
       resize: none;
+      transition: .3s all;
+      padding: 5px;
       width: 100%; }
+      #commentator form textarea:focus {
+        color: #555;
+        outline: none; }
     #commentator form button {
       background: #333;
       border: none;
       color: #fff;
       cursor: pointer;
-      display: block;
+      display: none;
       margin: 5px 0 0;
       padding: 3px 0;
       text-align: center;
-      text-shadow: 0 -1px 0 black;
+      text-shadow: 0 -1px 0 #000;
       width: 100%; }
       #commentator form button:hover {
         background: #555; }
       #commentator form button:active {
         background: #000; }
+
+.someClass {
+  background: #eee; }
