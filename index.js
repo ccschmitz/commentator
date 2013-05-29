@@ -31,6 +31,8 @@ function Commentator() {
     console.log(highlighter.serialize());
     var text = rangy.getSelection().toString();
     d.body.appendChild(templ);
+    templ.style.top = e.pageY - 11;
+    templ.style.left = e.pageX + 4;
     console.log(e);
   };
 }

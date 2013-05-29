@@ -4,7 +4,8 @@
   border-radius: 5px;
   box-shadow: 0 1px 4px rgba(0, 0, 0, 0.08);
   font-family: helvetica, arial, sans-serif;
-  overflow: none;
+  overflow: hidden;
+  position: absolute;
   width: 400px; }
   #commentator .comment {
     background: #F3F3F3;
