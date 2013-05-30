@@ -15,7 +15,8 @@
     "vendor/rangy-core.js",
     "vendor/rangy-cssclassapplier.js",
     "vendor/rangy-highlighter.js",
-    "vendor/rangy-textrange.js"
+    "vendor/rangy-textrange.js",
+    "vendor/socket.io-client.js"
   ],
   "styles": [
     "commentator.css"

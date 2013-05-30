@@ -1,3 +1,4 @@
+var io = require('./vendor/socket.io-client');
 require('./vendor/rangy-core');  // Just a shim, so we get a 'rangy' global object
 require('./vendor/rangy-cssclassapplier');
 require('./vendor/rangy-highlighter');
@@ -6,6 +7,8 @@ require('./vendor/rangy-textrange');
 module.exports = Commentator;
 
 function Commentator() {
+  var socket = io.connect('http://localhost:8080');
+
   var template = require('./template'),
       d = document,
       div = d.createElement('div');
@@ -28,11 +31,15 @@ function Commentator() {
       d.body.removeChild(templ);
     }
     highlighter.highlightSelection('someClass');
-    console.log(highlighter.serialize());
-    var text = rangy.getSelection().toString();
-    d.body.appendChild(templ);
-    templ.style.top = e.pageY - 11;
-    templ.style.left = e.pageX + 4;
-    console.log(e);
+    var sel = highlighter.serialize();
+    socket.emit('comment', {serialized: sel});
+    //d.body.appendChild(templ);
+    //templ.style.top = e.pageY - 11;
+    //templ.style.left = e.pageX + 4;
+    //console.log(e);
   };
+
+  socket.on('add-comment', function(data) {
+    highlighter.deserialize(data.serialized);
+  });
 }
