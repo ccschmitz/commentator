@@ -5,6 +5,7 @@
   "version": "0.0.1",
   "keywords": [],
   "dependencies": {
+    "a-x/sockjs": "*"
   },
   "development": {},
   "license": "MIT",
@@ -15,8 +16,7 @@
     "vendor/rangy-core.js",
     "vendor/rangy-cssclassapplier.js",
     "vendor/rangy-highlighter.js",
-    "vendor/rangy-textrange.js",
-    "vendor/socket.io-client.js"
+    "vendor/rangy-textrange.js"
   ],
   "styles": [
     "commentator.css"
