@@ -1,4 +1,4 @@
-var io = require('./vendor/socket.io-client');
+require('sockjs');
 require('./vendor/rangy-core');  // Just a shim, so we get a 'rangy' global object
 require('./vendor/rangy-cssclassapplier');
 require('./vendor/rangy-highlighter');
@@ -7,7 +7,11 @@ require('./vendor/rangy-textrange');
 module.exports = Commentator;
 
 function Commentator() {
-  var socket = io.connect('http://localhost:8080');
+  var sock = new SockJS('http://localhost:9999/sock')
+
+  sock.onopen = function() {
+    console.log('connected');
+  };
 
   var template = require('./template'),
       d = document,
@@ -32,14 +36,14 @@ function Commentator() {
     }
     highlighter.highlightSelection('someClass');
     var sel = highlighter.serialize();
-    socket.emit('comment', {serialized: sel});
-    //d.body.appendChild(templ);
-    //templ.style.top = e.pageY - 11;
-    //templ.style.left = e.pageX + 4;
-    //console.log(e);
+    sock.send(JSON.stringify({serialized: sel}));
+    d.body.appendChild(templ);
+    templ.style.top = e.pageY - 11;
+    templ.style.left = e.pageX + 4;
   };
 
-  socket.on('add-comment', function(data) {
-    highlighter.deserialize(data.serialized);
-  });
+  sock.onmessage = function(e) {
+    console.log(e);
+    highlighter.deserialize(JSON.parse(e.data).serialized);
+  };
 }
