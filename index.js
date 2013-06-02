@@ -6,7 +6,9 @@ require('./vendor/rangy-textrange');
 
 module.exports = Commentator;
 
-function Dialog() {
+function Dialog(highlighter, sock) {
+  this.highlighter = highlighter;
+  this.sock = sock;
   this.id = 'commentator';
   var template = require('./template'),
       div = document.createElement('div');
@@ -17,11 +19,31 @@ function Dialog() {
 }
 
 Dialog.prototype.show = function(e) {
+  var self = this;
   if (e) {
     this.templ.style.top = e.pageY - 11;
     this.templ.style.left = e.pageX + 4;
   }
+
   document.body.appendChild(this.templ);
+
+  document.getElementById('commentator-ta').onkeyup = function(e) {
+    e = e || window.event;
+
+    if (e.keyCode == 13) {
+      var rangesEle = document.getElementById('commentator-ranges');
+      var nodeEle = document.getElementById('commentator-node');
+
+      var ranges = JSON.parse(rangesEle.value);
+      var node = nodeEle.value;
+
+      new Comment(ranges, this.value, node, self.highlighter, self.sock).send();
+
+      this.value = '';
+      self.hide();
+      return false;
+    }
+  };
 };
 
 Dialog.prototype.getElement = function() {
@@ -34,11 +56,17 @@ Dialog.prototype.hide = function () {
   }
 };
 
-function Comment(selection, text, highlighter, sock) {
+function Comment(ranges, text, node, highlighter, sock) {
   this.text = text;
-  this.selection = selection;
+  this.context = ranges;
   this.sock = sock;
-  highlighter.deserialize(selection);
+  this.node = node;
+
+  var nodeEle = document.getElementById(node);
+  var selection = rangy.getSelection().restoreCharacterRanges(nodeEle, ranges);
+  highlighter.highlightSelection('someClass', selection);
+  rangy.getSelection().removeAllRanges();
+
   document.getElementById("comment-clickable").onclick = function(e) {
     console.log(e);
     // I need to tie back this event to the thread somehow
@@ -47,14 +75,14 @@ function Comment(selection, text, highlighter, sock) {
 
 Comment.prototype.send = function() {
   this.sock.send(JSON.stringify({
-    selection: this.selection,
-    comment: this.text
+    context: JSON.stringify(this.context),
+    text: this.text,
+    node: this.node
   }));
 };
 
-function Commentator() {
-  var sock = new SockJS('http://localhost:9999/sock'),
-      dialog = new Dialog();
+function Commentator(idArr) {
+  var sock = new SockJS('http://localhost:9999/sock');
 
   rangy.init();
 
@@ -67,41 +95,33 @@ function Commentator() {
         }
       });
 
+  var dialog = new Dialog(highlighter, sock);
+
   highlighter.addClassApplier(classApplier);
 
-  document.getElementById('content').onmouseup = function(e) {
+  var omu = function(e) {
     var selection = rangy.getSelection(),
         selected = selection.anchorOffset !== selection.focusOffset;
-
-    var ranges = selection.saveCharacterRanges(this);
 
     if (selected) {
       dialog.show(e);
 
-      highlighter.highlightSelection('someClass', selection);
-      var serialized = highlighter.serialize(selection);
-      highlighter.unhighlightSelection(selection);
+      var ranges = selection.saveCharacterRanges(this);
 
-      var selNode = document.getElementById('commentator-selection');
-      selNode.value = serialized;
+      var rangesEle = document.getElementById('commentator-ranges');
+      var nodeEle = document.getElementById('commentator-node');
 
-      document.getElementById('commentator-ta').onkeyup = function(e) {
-        e = e || window.event;
-
-        if (e.keyCode == 13) {
-          dialog.hide();
-
-          console.log(selNode.value);
-          new Comment(selNode.value, this.value, highlighter, sock).send();
-
-          this.value = '';
-          return false;
-        }
-      };
+      rangesEle.value = JSON.stringify(ranges);
+      nodeEle.value = e.currentTarget.id;
     } else {
       dialog.hide();
     }
   };
+
+  for (var i=0; i < idArr.length; i++) {
+    document.getElementById(idArr).onmouseup = omu;
+  }
+
 
   sock.onopen = function() {
     console.log('connected');
@@ -109,7 +129,8 @@ function Commentator() {
 
   sock.onmessage = function(e) {
     var data = JSON.parse(e.data);
+    var ranges = JSON.parse(data.context);
     console.log(data);
-    new Comment(data.selection, data.comment, highlighter, sock);
+    new Comment(ranges, data.text, data.node, highlighter, sock);
   };
 }
