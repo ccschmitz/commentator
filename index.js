@@ -6,47 +6,100 @@ require('./vendor/rangy-textrange');
 
 module.exports = Commentator;
 
+function Dialog() {
+  this.id = 'commentator';
+  var template = require('./template'),
+      div = document.createElement('div');
+  div.id = this.id;
+  div.innerHTML = template;
+
+  this.templ = div;
+}
+
+Dialog.prototype.show = function(e) {
+  if (e) {
+    this.templ.style.top = e.pageY - 11;
+    this.templ.style.left = e.pageX + 4;
+  }
+  document.body.appendChild(this.templ);
+};
+
+Dialog.prototype.getElement = function() {
+  return (document.getElementById(this.id));
+};
+
+Dialog.prototype.hide = function () {
+  if (this.getElement()) {
+    document.body.removeChild(this.templ);
+  }
+};
+
+function Comment(selection, text, highlighter, sock) {
+  this.text = text;
+  this.selection = selection;
+  this.sock = sock;
+  highlighter.deserialize(selection);
+  document.getElementById("comment-clickable").onclick = function(e) {
+    console.log(e);
+    // I need to tie back this event to the thread somehow
+  };
+}
+
+Comment.prototype.send = function() {
+  this.sock.send(JSON.stringify({
+    selection: this.selection,
+    comment: this.text
+  }));
+};
+
 function Commentator() {
   var sock = new SockJS('http://localhost:9999/sock'),
-      template = require('./template'),
-      d = document,
-      div = d.createElement('div');
-
-  div.id = 'commentator';
-  div.innerHTML = template;
-  var templ = div;
+      dialog = new Dialog();
 
   rangy.init();
 
   var highlighter = rangy.createHighlighter(document, 'TextRange'),
-      classApplier = rangy.createCssClassApplier('someClass', {ignoreWhiteSpace: false, normalize: true});
+      classApplier = rangy.createCssClassApplier('someClass', {
+        ignoreWhiteSpace: false,
+        normalize: true,
+        elementProperties: {
+          id: "comment-clickable"
+        }
+      });
 
   highlighter.addClassApplier(classApplier);
 
-  d.getElementById('content').onmouseup = function(e) {
+  document.getElementById('content').onmouseup = function(e) {
     var selection = rangy.getSelection(),
         selected = selection.anchorOffset !== selection.focusOffset;
 
     if (selected) {
+      dialog.show(e);
+
+      // Step one, backup the entire highlighter state
+      // Step two, highlight the selection so it can be serialized
+      // Step three, unhighlight the selection because there is no associated comment yet
+      // Step four, place back the original highlighter state
+      var old_state = highlighter.serialize();
       highlighter.highlightSelection('someClass', selection);
       var serialized = highlighter.serialize(selection);
-
-      d.body.appendChild(templ);
-      templ.style.top = e.pageY - 11;
-      templ.style.left = e.pageX + 4;
+      highlighter.unhighlightSelection(selection);
+      highlighter.deserialize(old_state);
 
       document.getElementById('commentator-ta').onkeyup = function(e) {
         e = e || window.event;
 
         if (e.keyCode == 13) {
-          d.body.removeChild(templ);
+          dialog.hide();
 
-          sock.send(JSON.stringify({selection: serialized,
-                                    comment: this.value}));
+          new Comment(serialized, this.value, highlighter, sock).send();
+
           this.value = '';
           return false;
         }
       };
+    } else {
+      dialog.hide();
     }
   };
 
@@ -55,7 +108,8 @@ function Commentator() {
   };
 
   sock.onmessage = function(e) {
-    console.log(JSON.parse(e.data));
-    highlighter.deserialize(JSON.parse(e.data).selection);
+    var data = JSON.parse(e.data);
+    console.log(data);
+    new Comment(data.selection, data.comment, highlighter, sock);
   };
 }
