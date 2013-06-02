@@ -73,18 +73,17 @@ function Commentator() {
     var selection = rangy.getSelection(),
         selected = selection.anchorOffset !== selection.focusOffset;
 
+    var ranges = selection.saveCharacterRanges(this);
+
     if (selected) {
       dialog.show(e);
 
-      // Step one, backup the entire highlighter state
-      // Step two, highlight the selection so it can be serialized
-      // Step three, unhighlight the selection because there is no associated comment yet
-      // Step four, place back the original highlighter state
-      var old_state = highlighter.serialize();
       highlighter.highlightSelection('someClass', selection);
       var serialized = highlighter.serialize(selection);
       highlighter.unhighlightSelection(selection);
-      highlighter.deserialize(old_state);
+
+      var selNode = document.getElementById('commentator-selection');
+      selNode.value = serialized;
 
       document.getElementById('commentator-ta').onkeyup = function(e) {
         e = e || window.event;
@@ -92,7 +91,8 @@ function Commentator() {
         if (e.keyCode == 13) {
           dialog.hide();
 
-          new Comment(serialized, this.value, highlighter, sock).send();
+          console.log(selNode.value);
+          new Comment(selNode.value, this.value, highlighter, sock).send();
 
           this.value = '';
           return false;
