@@ -39,7 +39,6 @@ function Commentator() {
         e = e || window.event;
 
         if (e.keyCode == 13) {
-          var popover = d.getElementById('commentator');
           d.body.removeChild(templ);
 
           sock.send(JSON.stringify({selection: serialized,
