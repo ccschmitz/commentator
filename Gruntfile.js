@@ -18,6 +18,11 @@ module.exports = function(grunt) {
         options: { livereload: true },
         files: ['css/sass/*.scss'],
         tasks: ['sass:dev']
+      },
+      html: {
+        options: { livereload: true },
+        files: ['index.html'],
+        tasks: ['exec:build_project']
       }
     },
     sass: {

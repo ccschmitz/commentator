@@ -1,3 +1,10 @@
+// Persistency
+// Store URL with Comments
+// Timestamps
+// Store user email address in localStore
+// One level nested comments
+// 
+
 require('sockjs');
 require('./vendor/rangy-core');
 require('./vendor/rangy-cssclassapplier');
@@ -8,6 +15,7 @@ module.exports = Commentator;
 
 var sock = new SockJS('http://localhost:9999/sock');
 sock.onopen = function() {
+  // TODO load all comments from this page
   console.log('connected');
 };
 sock.onmessage = function(e) {
