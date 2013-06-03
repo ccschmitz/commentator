@@ -6,9 +6,21 @@ require('./vendor/rangy-textrange');
 
 module.exports = Commentator;
 
-function Dialog(highlighter, sock) {
-  this.highlighter = highlighter;
-  this.sock = sock;
+var sock = new SockJS('http://localhost:9999/sock');
+sock.onopen = function() {
+  console.log('connected');
+};
+sock.onmessage = function(e) {
+  var data = JSON.parse(e.data);
+  var ranges = JSON.parse(data.context);
+  console.log(data);
+  new Comment(ranges, data.text, data.node, sock);
+};
+
+rangy.init();
+var highlighter = rangy.createHighlighter(document, 'TextRange');
+
+function Dialog() {
   this.id = 'commentator';
   var template = require('./template'),
       div = document.createElement('div');
@@ -37,7 +49,7 @@ Dialog.prototype.show = function(e) {
       var ranges = JSON.parse(rangesEle.value);
       var node = nodeEle.value;
 
-      new Comment(ranges, this.value, node, self.highlighter, self.sock).send();
+      new Comment(ranges, this.value, node).send();
 
       this.value = '';
       self.hide();
@@ -56,14 +68,23 @@ Dialog.prototype.hide = function () {
   }
 };
 
-function Comment(ranges, text, node, highlighter, sock) {
+function Comment(ranges, text, node) {
   this.text = text;
   this.context = ranges;
-  this.sock = sock;
   this.node = node;
 
   var nodeEle = document.getElementById(node);
   var selection = rangy.getSelection().restoreCharacterRanges(nodeEle, ranges);
+
+  var classApplier = rangy.createCssClassApplier('someClass', {
+    ignoreWhiteSpace: false,
+    normalize: true,
+    elementProperties: {
+      id: "comment-clickable"
+    }
+  });
+  highlighter.addClassApplier(classApplier);
+
   highlighter.highlightSelection('someClass', selection);
   rangy.getSelection().removeAllRanges();
 
@@ -74,7 +95,7 @@ function Comment(ranges, text, node, highlighter, sock) {
 }
 
 Comment.prototype.send = function() {
-  this.sock.send(JSON.stringify({
+  sock.send(JSON.stringify({
     context: JSON.stringify(this.context),
     text: this.text,
     node: this.node
@@ -82,22 +103,7 @@ Comment.prototype.send = function() {
 };
 
 function Commentator(idArr) {
-  var sock = new SockJS('http://localhost:9999/sock');
-
-  rangy.init();
-
-  var highlighter = rangy.createHighlighter(document, 'TextRange'),
-      classApplier = rangy.createCssClassApplier('someClass', {
-        ignoreWhiteSpace: false,
-        normalize: true,
-        elementProperties: {
-          id: "comment-clickable"
-        }
-      });
-
-  var dialog = new Dialog(highlighter, sock);
-
-  highlighter.addClassApplier(classApplier);
+  var dialog = new Dialog();
 
   var omu = function(e) {
     var selection = rangy.getSelection(),
@@ -119,18 +125,6 @@ function Commentator(idArr) {
   };
 
   for (var i=0; i < idArr.length; i++) {
-    document.getElementById(idArr).onmouseup = omu;
+    document.getElementById(idArr[i]).onmouseup = omu;
   }
-
-
-  sock.onopen = function() {
-    console.log('connected');
-  };
-
-  sock.onmessage = function(e) {
-    var data = JSON.parse(e.data);
-    var ranges = JSON.parse(data.context);
-    console.log(data);
-    new Comment(ranges, data.text, data.node, highlighter, sock);
-  };
 }
