@@ -1,5 +1,3 @@
-var shell = require('shelljs');
-
 /*global module:false*/
 module.exports = function(grunt) {
 
