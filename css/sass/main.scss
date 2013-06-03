@@ -1,102 +1,102 @@
 #commentator {
-	background: #fff;
-	border: 1px solid #eee;
-	border-radius: 5px;
-	box-shadow: 0 1px 4px rgba(0, 0, 0, .08);
-	font-family: helvetica, arial, sans-serif;
-	overflow: hidden;
-	position: absolute;
-	width: 400px;
+    background: #fff;
+    border: 1px solid #eee;
+    border-radius: 5px;
+    box-shadow: 0 1px 4px rgba(0, 0, 0, .08);
+    font-family: helvetica, arial, sans-serif;
+    overflow: hidden;
+    position: absolute;
+    width: 400px;
 
-	.comments {}
-	.comment {
-		background: #F3F3F3;
-		box-shadow: 0 1px 0 rgba(255, 255, 255, .75) inset, 0 -1px 0 rgba(0, 0, 0, .05) inset;
-		margin: 0;
-		padding: 8px 10px 10px 40px;
-		position: relative;
+    .comments {}
+    .comment {
+        background: #F3F3F3;
+        box-shadow: 0 1px 0 rgba(255, 255, 255, .75) inset, 0 -1px 0 rgba(0, 0, 0, .05) inset;
+        margin: 0;
+        padding: 8px 10px 10px 40px;
+        position: relative;
 
-		&:first-of-type { box-shadow: 0 -1px 0 rgba(0, 0, 0, .05) inset; }
+        &:first-of-type { box-shadow: 0 -1px 0 rgba(0, 0, 0, .05) inset; }
 
-		p {
-			color: #444;
-			font-size: 11px;
-			text-shadow: 0 1px 0 #fff;
-			margin: 0;
-		}
+        p {
+            color: #444;
+            font-size: 11px;
+            text-shadow: 0 1px 0 #fff;
+            margin: 0;
+        }
 
-		.comment-author {
-			color: #333;
-			display: block;
-			font-size: 13px;
-			font-weight: bold;
-			margin: 0 0 4px;
-			text-decoration: none;
-			text-shadow: 0 1px 0 #fff;
+        .comment-author {
+            color: #333;
+            display: block;
+            font-size: 13px;
+            font-weight: bold;
+            margin: 0 0 4px;
+            text-decoration: none;
+            text-shadow: 0 1px 0 #fff;
 
-			&:hover, &:focus { color: #777; }
-			&:active { color: #000; }
-		}
-	}
+            &:hover, &:focus { color: #777; }
+            &:active { color: #000; }
+        }
+    }
 
-	.comment-avatar {
-		box-shadow: 0 1px 0 rgba(255, 255, 255, .5);
-		border-radius: 50%;
-		height: 25px;
-		position: absolute;
-			top: 8px; left: 8px;
-		width: 25px;
-	}
+    .comment-avatar {
+        box-shadow: 0 1px 0 rgba(255, 255, 255, .5);
+        border-radius: 50%;
+        height: 25px;
+        position: absolute;
+            top: 8px; left: 8px;
+        width: 25px;
+    }
 
-	form {
-		margin: 0;
-		padding: 0;
+    form {
+        margin: 0;
+        padding: 0;
 
-		textarea {
-			background: #fff;
-			border: none;
-			border-radius: 0 0 5px 5px;
-			box-shadow: 0 1px 3px rgba(0, 0, 0, .05) inset;
-			box-sizing: border-box;
-			color: #999;
-			margin: 0;
-			min-height: 40px;
-			resize: none;
-			transition: .3s all;
-			padding: 5px;
-			width: 100%;
+        textarea {
+            background: #fff;
+            border: none;
+            border-radius: 0 0 5px 5px;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, .05) inset;
+            box-sizing: border-box;
+            color: #999;
+            margin: 0;
+            min-height: 40px;
+            resize: none;
+            transition: .3s all;
+            padding: 5px;
+            width: 100%;
 
-			&:focus {
-				color: #555;
-				outline: none;
-			}
-		}
+            &:focus {
+                color: #555;
+                outline: none;
+            }
+        }
 
-		button {
-			background: #333;
-			border: none;
-			color: #fff;
-			cursor: pointer;
-			display: none;
-			margin: 5px 0 0;
-			padding: 3px 0;
-			text-align: center;
-			text-shadow: 0 -1px 0 #000;
-			width: 100%;
+        button {
+            background: #333;
+            border: none;
+            color: #fff;
+            cursor: pointer;
+            display: none;
+            margin: 5px 0 0;
+            padding: 3px 0;
+            text-align: center;
+            text-shadow: 0 -1px 0 #000;
+            width: 100%;
 
-			&:hover { background: #555; }
-			&:active { background: #000; }
-		}
-	}
+            &:hover { background: #555; }
+            &:active { background: #000; }
+        }
+    }
 }
 
 .has-comment {
+    cursor: pointer;
     -webkit-transition: background 0.2s linear;
     -moz-transition: background 0.2s linear;
     -ms-transition: background 0.2s linear;
     -o-transition: background 0.2s linear;
     transition: background 0.2s linear;
-    &:hover {
-        background-color: #d1d1d1;
-    }
+
+    &:hover { background-color: #d1d1d1; }
 }
