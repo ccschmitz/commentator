@@ -102,7 +102,7 @@ Comment.prototype.send = function() {
   }));
 };
 
-function Commentator(idArr) {
+function Commentator(commentables) {
   var dialog = new Dialog();
 
   var omu = function(e) {
@@ -124,6 +124,7 @@ function Commentator(idArr) {
     }
   };
 
+  var idArr = commentables.replace(/ /g, '').split(',');
   for (var i=0; i < idArr.length; i++) {
     document.getElementById(idArr[i]).onmouseup = omu;
   }
