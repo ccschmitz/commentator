@@ -4,9 +4,10 @@
   border-radius: 5px;
   box-shadow: 0 1px 4px rgba(0, 0, 0, 0.08);
   font-family: helvetica, arial, sans-serif;
-  overflow: hidden;
+  max-height: 200px;
+  overflow-y: scroll;
   position: absolute;
-  width: 400px; }
+  max-width: 300px; }
   #commentator .comment {
     background: #F3F3F3;
     box-shadow: 0 1px 0 rgba(255, 255, 255, 0.75) inset, 0 -1px 0 rgba(0, 0, 0, 0.05) inset;
@@ -15,7 +16,7 @@
     position: relative; }
     #commentator .comment:first-of-type {
       box-shadow: 0 -1px 0 rgba(0, 0, 0, 0.05) inset; }
-    #commentator .comment p {
+    #commentator .comment .comment-content {
       color: #444;
       font-size: 11px;
       text-shadow: 0 1px 0 #fff;
@@ -32,6 +33,15 @@
         color: #777; }
       #commentator .comment .comment-author:active {
         color: #000; }
+    #commentator .comment .comment-reply-link {
+      color: #444;
+      display: block;
+      font-size: 9px;
+      margin-top: 5px; }
+  #commentator .comment-replies {
+    margin-top: 5px; }
+    #commentator .comment-replies .comment {
+      box-shadow: none; }
   #commentator .comment-avatar {
     box-shadow: 0 1px 0 rgba(255, 255, 255, 0.5);
     border-radius: 50%;
@@ -40,10 +50,19 @@
     top: 8px;
     left: 8px;
     width: 25px; }
-  #commentator form {
+  #commentator .comment-new-link {
+    background: #777;
+    color: #fff;
+    display: block;
+    font-size: 14px;
+    padding: 5px 0;
+    text-align: center;
+    text-decoration: none; }
+  #commentator .commentator-comment-form {
+    display: none;
     margin: 0;
     padding: 0; }
-    #commentator form textarea {
+    #commentator .commentator-comment-form textarea {
       background: #fff;
       border: none;
       border-radius: 0 0 5px 5px;
@@ -56,10 +75,10 @@
       transition: .3s all;
       padding: 5px;
       width: 100%; }
-      #commentator form textarea:focus {
+      #commentator .commentator-comment-form textarea:focus {
         color: #555;
         outline: none; }
-    #commentator form button {
+    #commentator .commentator-comment-form button {
       background: #333;
       border: none;
       color: #fff;
@@ -70,10 +89,23 @@
       text-align: center;
       text-shadow: 0 -1px 0 #000;
       width: 100%; }
-      #commentator form button:hover {
+      #commentator .commentator-comment-form button:hover {
         background: #555; }
-      #commentator form button:active {
+      #commentator .commentator-comment-form button:active {
         background: #000; }
+  #commentator .commentator-login {
+    display: none;
+    text-align: center; }
+    #commentator .commentator-login .commentator-login-button {
+      background: #777;
+      color: #fff;
+      display: block;
+      margin: 10px auto;
+      padding: 5px 0;
+      text-align: center;
+      text-decoration: none;
+      text-shadow: 0 1px 0 #000;
+      width: 60%; }
 
 .has-comment {
   cursor: pointer;

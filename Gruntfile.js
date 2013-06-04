@@ -21,7 +21,7 @@ module.exports = function(grunt) {
       },
       html: {
         options: { livereload: true },
-        files: ['index.html'],
+        files: ['example.html', 'template.html'],
         tasks: ['exec:build_project']
       }
     },

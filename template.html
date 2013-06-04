@@ -1,20 +1,41 @@
-<div class="commentator-login">
-
-</div>
 <div class="commentator-comments">
     <div class="comment">
         <img src="images/avatar-chris.jpg" alt="Chris Schmitz" class="comment-avatar">
         <a href="#" class="comment-author">Chris Schmitz</a>
         <div class="comment-content">I think this warrants further discussion! Maybe we will talk about it some more sometime. Perhaps on our lunch break?</div>
+        <div class="comment-replies">
+            <div class="comment">
+                <img src="images/avatar-zach.jpg" alt="Zach Gohr" class="comment-avatar">
+                <a href="#" class="comment-author">Zach Gohr</a>
+                <div class="comment-content">Well, I think you're an idiot...</div>
+            </div>
+            <div class="comment">
+                <img src="images/avatar-chris.jpg" alt="Chris Schmitz" class="comment-avatar">
+                <a href="#" class="comment-author">Chris Schmitz</a>
+                <div class="comment-content">Yeah, but in my defense, you're a jerk.</div>
+            </div>
+            <div class="comment">
+                <img src="images/avatar-zach.jpg" alt="Zach Gohr" class="comment-avatar">
+                <a href="#" class="comment-author">Zach Gohr</a>
+                <div class="comment-content">You take it back! That's defamation!</div>
+            </div>
+        </div>
+        <a href="#" class="comment-reply-link">Reply to conversation</a>
     </div>
     <div class="comment">
         <img src="images/avatar-zach.jpg" alt="Zach Gohr" class="comment-avatar">
         <a href="#" class="comment-author">Zach Gohr</a>
-        <div class="comment-content">Well, I think you're an idiot...</div>
-
+        <div class="comment-content">I also have anothre important point to make here.</div>
+        <a href="#" class="comment-reply-link">Reply to Zach</a>
     </div>
+    <a href="#" class="comment-new-link">Join the Conversation</a>
 </div>
-<form class="commentator-comment-box">
+<div class="commentator-login">
+    <div class="commentator-login-prompt">You need to log in to Commentator before you can comment...</div>
+    <a href="#" class="commentator-login-button">Login</a>
+    <input type="text" id="commentor-name" clas="commentator-login-name">
+</div>
+<form class="commentator-comment-form">
     <input type="hidden" id="commentator-ranges">
     <input type="hidden" id="commentator-node">
     <textarea id="commentator-ta" placeholder="Enter your comment..." rows="1"></textarea>

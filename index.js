@@ -3,7 +3,7 @@
 // Timestamps
 // Store user email address in localStore
 // One level nested comments
-// 
+//
 
 require('sockjs');
 require('./vendor/rangy-core');

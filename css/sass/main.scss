@@ -4,9 +4,10 @@
     border-radius: 5px;
     box-shadow: 0 1px 4px rgba(0, 0, 0, .08);
     font-family: helvetica, arial, sans-serif;
-    overflow: hidden;
+    max-height: 200px;
+    overflow-y: scroll;
     position: absolute;
-    width: 400px;
+    max-width: 300px;
 
     .comments {}
     .comment {
@@ -18,7 +19,7 @@
 
         &:first-of-type { box-shadow: 0 -1px 0 rgba(0, 0, 0, .05) inset; }
 
-        p {
+        .comment-content {
             color: #444;
             font-size: 11px;
             text-shadow: 0 1px 0 #fff;
@@ -37,6 +38,20 @@
             &:hover, &:focus { color: #777; }
             &:active { color: #000; }
         }
+
+        .comment-reply-link {
+            color: #444;
+            display: block;
+            font-size: 9px;
+            margin-top: 5px;
+        }
+    }
+
+    .comment-replies {
+        margin-top: 5px;
+        .comment {
+            box-shadow: none;
+        }
     }
 
     .comment-avatar {
@@ -48,7 +63,18 @@
         width: 25px;
     }
 
-    form {
+    .comment-new-link {
+        background: #777;
+        color: #fff;
+        display: block;
+        font-size: 14px;
+        padding: 5px 0;
+        text-align: center;
+        text-decoration: none;
+    }
+
+    .commentator-comment-form {
+        display: none;
         margin: 0;
         padding: 0;
 
@@ -86,6 +112,29 @@
 
             &:hover { background: #555; }
             &:active { background: #000; }
+        }
+    }
+
+    .commentator-login {
+        display: none;
+        text-align: center;
+
+        .commentator-login-prompt {
+
+        }
+        .commentator-login-button {
+            background: #777;
+            color: #fff;
+            display: block;
+            margin: 10px auto;
+            padding: 5px 0;
+            text-align: center;
+            text-decoration: none;
+            text-shadow: 0 1px 0 #000;
+            width: 60%;
+        }
+        .commentator-login-name {
+
         }
     }
 }
