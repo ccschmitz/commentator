@@ -41,7 +41,17 @@
   #commentator .comment-replies {
     margin-top: 5px; }
     #commentator .comment-replies .comment {
-      box-shadow: none; }
+      box-shadow: none;
+      padding-bottom: 4px;
+      padding-left: 30px; }
+    #commentator .comment-replies .comment-avatar {
+      left: 0;
+      height: 20px;
+      width: 20px; }
+    #commentator .comment-replies .comment-author {
+      font-size: 11px; }
+    #commentator .comment-replies .comment-content {
+      font-size: 10px; }
   #commentator .comment-avatar {
     box-shadow: 0 1px 0 rgba(255, 255, 255, 0.5);
     border-radius: 50%;
@@ -94,18 +104,30 @@
       #commentator .commentator-comment-form button:active {
         background: #000; }
   #commentator .commentator-login {
+    background: #fff;
     display: none;
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
     text-align: center; }
+    #commentator .commentator-login.open {
+      display: block; }
+    #commentator .commentator-login .commentator-login-prompt {
+      padding-top: 25px; }
     #commentator .commentator-login .commentator-login-button {
       background: #777;
       color: #fff;
       display: block;
-      margin: 10px auto;
+      margin: 25px auto 0;
       padding: 5px 0;
       text-align: center;
       text-decoration: none;
       text-shadow: 0 1px 0 #000;
       width: 60%; }
+    #commentator .commentator-login .commentator-login-name {
+      display: none; }
 
 .has-comment {
   cursor: pointer;

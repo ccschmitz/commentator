@@ -83,6 +83,8 @@ Dialog.prototype.show = function(e) {
 
   document.body.appendChild(this.templ);
 
+  setupCommentEventHandlers();
+
   document.getElementById('commentator-ta').onkeyup = function(e) {
     e = e || window.event;
 
@@ -182,5 +184,34 @@ function Commentator(commentables) {
   var idArr = commentables.replace(/ /g, '').split(',');
   for (var i=0; i < idArr.length; i++) {
     document.getElementById(idArr[i]).onmouseup = omu;
+  }
+}
+
+function setupCommentEventHandlers() {
+  var commentLinks = document.querySelectorAll('.comment-reply-link, .comment-new-link');
+
+  for (var i=0; i < commentLinks.length; i++) {
+    commentLinks[i].onclick = function(e) {
+      displayLogin();
+      return false;
+    }
+  }
+}
+
+function displayLogin() {
+  var loginPanel = document.getElementById('commentator-login'),
+      loginPanelClass = loginPanel.className,
+      commentator = document.getElementById('commentator');
+
+  loginPanel.className += ' open';
+  commentator.scrollTop = 0;
+
+  document.getElementById('commentator-login-button').onclick = function() {
+    loginPanel.className = loginPanelClass;
+    var loginLink = document.getElementsByClassName('comment-new-link')[0];
+    loginLink.parentNode.removeChild(loginLink);
+    document.getElementById('commentator-comment-form').style.display = 'block';
+    // TODO: Scroll to and focus on the comment form
+    // TODO: Put the comment for underneath the comment that is being replied to
   }
 }
