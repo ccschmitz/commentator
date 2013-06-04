@@ -22,7 +22,43 @@ sock.onmessage = function(e) {
   var data = JSON.parse(e.data);
   var ranges = JSON.parse(data.context);
   console.log(data);
-  new Comment(ranges, data.text, data.node, sock);
+  var c = new Comment(ranges, data.text, data.node, sock);
+  comments[c.nodeId] = c;
+};
+
+var comments = {};
+
+var util = {
+  overlaps_comment: function(characterRange, node) {
+    var new_start = characterRange.start,
+        new_end = characterRange.end;
+    for (var id in comments) {
+      if (comments[id].node !== node) {
+        return false;
+      }
+      var old_start = comments[id].start,
+          old_end = comments[id].end;
+      // |---|
+      // |---|
+      // Start and ends both equal
+      if (new_start == old_start && new_end == old_end) {
+        return true;
+      }
+      // |-----|
+      //   |--|
+      // Start between old start and end
+      if (new_start > old_start && new_start < old_end) {
+        return true;
+      }
+      //   |-----|
+      // |---|
+      // End between old start and end
+      if (new_end > old_start && new_end < old_end) {
+        return true;
+      }
+      return false;
+    }
+  }
 };
 
 rangy.init();
@@ -57,7 +93,9 @@ Dialog.prototype.show = function(e) {
       var ranges = JSON.parse(rangesEle.value);
       var node = nodeEle.value;
 
-      new Comment(ranges, this.value, node).send();
+      var c = new Comment(ranges, this.value, node);
+      c.send();
+      comments[c.nodeId] = c;
 
       this.value = '';
       self.hide();
@@ -80,23 +118,27 @@ function Comment(ranges, text, node) {
   this.text = text;
   this.context = ranges;
   this.node = node;
+  this.start = ranges[0].characterRange.start;
+  this.end = ranges[0].characterRange.end;
+  this.nodeId = ['commentator-', this.start, '-', this.end, '-', this.node].join('');
 
+  console.log(ranges);
   var nodeEle = document.getElementById(node);
   var selection = rangy.getSelection().restoreCharacterRanges(nodeEle, ranges);
 
-  var classApplier = rangy.createCssClassApplier('someClass', {
+  var classApplier = rangy.createCssClassApplier('has-comment', {
     ignoreWhiteSpace: false,
     normalize: true,
     elementProperties: {
-      id: "comment-clickable"
+      id: this.nodeId
     }
   });
   highlighter.addClassApplier(classApplier);
 
-  highlighter.highlightSelection('someClass', selection);
+  highlighter.highlightSelection('has-comment', selection);
   rangy.getSelection().removeAllRanges();
 
-  document.getElementById("comment-clickable").onclick = function(e) {
+  document.getElementById(this.nodeId).onclick = function(e) {
     console.log(e);
     // I need to tie back this event to the thread somehow
   };
@@ -118,15 +160,20 @@ function Commentator(commentables) {
         selected = selection.anchorOffset !== selection.focusOffset;
 
     if (selected) {
-      dialog.show(e);
+      var node = e.currentTarget.id;
 
       var ranges = selection.saveCharacterRanges(this);
+      if (util.overlaps_comment(ranges[0].characterRange, node)) {
+        return;
+      }
+
+      dialog.show(e);
 
       var rangesEle = document.getElementById('commentator-ranges');
       var nodeEle = document.getElementById('commentator-node');
 
       rangesEle.value = JSON.stringify(ranges);
-      nodeEle.value = e.currentTarget.id;
+      nodeEle.value = node;
     } else {
       dialog.hide();
     }
