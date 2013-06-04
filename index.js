@@ -4,6 +4,8 @@
 // Store user email address in localStore
 // One level nested comments
 // 
+module.exports = Commentator;
+
 
 require('sockjs');
 require('./vendor/rangy-core');
@@ -11,7 +13,9 @@ require('./vendor/rangy-cssclassapplier');
 require('./vendor/rangy-highlighter');
 require('./vendor/rangy-textrange');
 
-module.exports = Commentator;
+var Dialog = require('./lib/dialog'),
+    utils = require('./lib/utils');
+
 
 var sock = new SockJS('http://localhost:9999/sock');
 sock.onopen = function() {
@@ -28,91 +32,8 @@ sock.onmessage = function(e) {
 
 var comments = {};
 
-var util = {
-  overlaps_comment: function(characterRange, node) {
-    var new_start = characterRange.start,
-        new_end = characterRange.end;
-    for (var id in comments) {
-      if (comments[id].node !== node) {
-        return false;
-      }
-      var old_start = comments[id].start,
-          old_end = comments[id].end;
-      // |---|
-      // |---|
-      // Start and ends both equal
-      if (new_start == old_start && new_end == old_end) {
-        return true;
-      }
-      // |-----|
-      //   |--|
-      // Start between old start and end
-      if (new_start > old_start && new_start < old_end) {
-        return true;
-      }
-      //   |-----|
-      // |---|
-      // End between old start and end
-      if (new_end > old_start && new_end < old_end) {
-        return true;
-      }
-      return false;
-    }
-  }
-};
-
 rangy.init();
 var highlighter = rangy.createHighlighter(document, 'TextRange');
-
-function Dialog() {
-  this.id = 'commentator';
-  var template = require('./template'),
-      div = document.createElement('div');
-  div.id = this.id;
-  div.innerHTML = template;
-
-  this.templ = div;
-}
-
-Dialog.prototype.show = function(e) {
-  var self = this;
-  if (e) {
-    this.templ.style.top = e.pageY - 11;
-    this.templ.style.left = e.pageX + 4;
-  }
-
-  document.body.appendChild(this.templ);
-
-  document.getElementById('commentator-ta').onkeyup = function(e) {
-    e = e || window.event;
-
-    if (e.keyCode == 13) {
-      var rangesEle = document.getElementById('commentator-ranges');
-      var nodeEle = document.getElementById('commentator-node');
-
-      var ranges = JSON.parse(rangesEle.value);
-      var node = nodeEle.value;
-
-      var c = new Comment(ranges, this.value, node);
-      c.send();
-      comments[c.nodeId] = c;
-
-      this.value = '';
-      self.hide();
-      return false;
-    }
-  };
-};
-
-Dialog.prototype.getElement = function() {
-  return (document.getElementById(this.id));
-};
-
-Dialog.prototype.hide = function () {
-  if (this.getElement()) {
-    document.body.removeChild(this.templ);
-  }
-};
 
 function Comment(ranges, text, node) {
   this.text = text;
@@ -163,7 +84,7 @@ function Commentator(commentables) {
       var node = e.currentTarget.id;
 
       var ranges = selection.saveCharacterRanges(this);
-      if (util.overlaps_comment(ranges[0].characterRange, node)) {
+      if (utils.overlaps_comment(ranges[0].characterRange, node, comments)) {
         return;
       }
 
