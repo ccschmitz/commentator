@@ -13,6 +13,7 @@
   "scripts": [
     "index.js",
     "lib/dialog.js",
+    "lib/comments.js",
     "lib/utils.js",
     "lib/template.js",
     "vendor/rangy-core.js",
