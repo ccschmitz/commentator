@@ -11,4 +11,7 @@ components: component.json
 clean:
 	rm -fr build components lib/template.js
 
-.PHONY: clean
+test:
+	node_modules/.bin/jasmine-node test/
+
+.PHONY: clean test
