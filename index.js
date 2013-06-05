@@ -13,15 +13,15 @@ require('./vendor/rangy-highlighter');
 require('./vendor/rangy-textrange');
 
 var Dialog = require('./lib/dialog'),
-    Comment = require('./lib/comments').Comment,
-    comments = require('./lib/comments'),
+    Comment = require('./lib/comments'),
+    comments = require('./lib/comments').comments,
     utils = require('./lib/utils');
 
+rangy.init();
 
 function Commentator(commentables) {
   var dialog = new Dialog();
 
-  rangy.init();
   var omu = function(e) {
     var selection = rangy.getSelection(),
         selected = selection.anchorOffset !== selection.focusOffset;
@@ -30,6 +30,7 @@ function Commentator(commentables) {
       var node = e.currentTarget.id;
 
       var ranges = selection.saveCharacterRanges(this);
+      debugger;
       if (utils.overlaps_comment(ranges[0].characterRange, node, comments)) {
         return;
       }
