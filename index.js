@@ -30,7 +30,6 @@ function Commentator(commentables) {
       var node = e.currentTarget.id;
 
       var ranges = selection.saveCharacterRanges(this);
-      debugger;
       if (utils.overlaps_comment(ranges[0].characterRange, node, comments)) {
         return;
       }
