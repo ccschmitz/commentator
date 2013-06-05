@@ -4,7 +4,8 @@
   "devDependencies": {
     "grunt": "~0.4.1",
     "grunt-contrib-watch": "~0.4.0",
-    "grunt-exec": "0.4.1",
-    "grunt-contrib-sass": "0.3.0"
+    "grunt-exec": "~0.4.1",
+    "grunt-contrib-sass": "~0.3.0",
+    "jasmine-node": "~1.8.0"
   }
 }
