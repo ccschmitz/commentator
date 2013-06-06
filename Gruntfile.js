@@ -9,10 +9,18 @@ module.exports = function(grunt) {
       '<%= grunt.template.today("yyyy-mm-dd") %>',
     // Task configuration.
     watch: {
+      karma: {
+        files: ['lib/*.js', 'test/*.spec.js'],
+        tasks: ['karma:unit:run']
+      },
+      jst: {
+        files: ['lib/*.html'],
+        tasks: ['jst', 'uglify']
+      },
       js: {
         options: { livereload: true },
-        files: ['*.js', 'lib/*.js', 'test/*.spec.js'],
-        tasks: ['exec:build_project', 'exec:test']
+        files: ['lib/*.js'],
+        tasks: ['uglify']
       },
       css: {
         options: { livereload: true },
@@ -22,7 +30,7 @@ module.exports = function(grunt) {
       html: {
         options: { livereload: true },
         files: ['example.html', 'template.html'],
-        tasks: ['exec:build_project']
+        tasks: ['uglify']
       }
     },
     sass: {
@@ -32,22 +40,54 @@ module.exports = function(grunt) {
         }
       }
     },
-    exec: {
-      build_project: {
-        command: 'make'
+    jst: {
+      compile: {
+        options: {
+        },
+        files: {
+          'lib/templates.js': ['lib/*.html']
+        }
+      }
+    },
+    uglify: {
+      options: {
+        beautify: true
       },
-      test: {
-        command: 'make test'
+      compress: {
+        files: {
+          'build/build.js': [
+            'vendor/underscore.js',
+            'vendor/sockjs.js',
+            'vendor/rangy-core.js',
+            'vendor/rangy-cssclassapplier.js',
+            'vendor/rangy-highlighter.js',
+            'vendor/rangy-textrange.js',
+            'lib/main.js',
+            'lib/comments.js',
+            'lib/dialog.js',
+            'lib/templates.js',
+            'lib/utils.js'
+            ]
+        }
+      }
+    },
+    karma: {
+      unit: {
+        configFile: 'test/karma.conf.js',
+        background: true
       }
     }
   });
 
   // These plugins provide necessary tasks.
   grunt.loadNpmTasks('grunt-contrib-watch');
-  grunt.loadNpmTasks('grunt-exec');
   grunt.loadNpmTasks('grunt-contrib-sass');
+  grunt.loadNpmTasks('grunt-karma');
+  grunt.loadNpmTasks('grunt-contrib-uglify');
+  grunt.loadNpmTasks('grunt-contrib-jst');
 
   // Default task.
-  grunt.registerTask('default', ['sass:dev', 'exec:build_project']);
+  grunt.registerTask('default', ['sass:dev', 'uglify']);
+  grunt.registerTask('watch-test', ['karma:unit', 'watch:karma']);
 
 };
