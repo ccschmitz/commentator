@@ -56,7 +56,6 @@ module.exports = function(grunt) {
       compress: {
         files: {
           'build/build.js': [
-            'vendor/underscore.js',
             'vendor/sockjs.js',
             'vendor/rangy-core.js',
             'vendor/rangy-cssclassapplier.js',
@@ -76,6 +75,14 @@ module.exports = function(grunt) {
         configFile: 'test/karma.conf.js',
         background: true
       }
+    },
+    str2js: {
+      options: {
+        namespace: 'CMNTTMPL'
+      },
+      build: {
+        'lib/templates.js': ['lib/template.html']
+      }
     }
   });
 
@@ -85,9 +92,10 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-karma');
   grunt.loadNpmTasks('grunt-contrib-uglify');
   grunt.loadNpmTasks('grunt-contrib-jst');
+  grunt.loadNpmTasks('grunt-string-to-js');
 
   // Default task.
-  grunt.registerTask('default', ['sass:dev', 'uglify']);
+  grunt.registerTask('default', ['sass:dev', 'str2js:build', 'uglify']);
   grunt.registerTask('watch-test', ['karma:unit', 'watch:karma']);
 
 };
