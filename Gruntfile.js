@@ -13,10 +13,6 @@ module.exports = function(grunt) {
         files: ['lib/*.js', 'test/*.spec.js'],
         tasks: ['karma:unit:run']
       },
-      jst: {
-        files: ['lib/*.html'],
-        tasks: ['jst', 'uglify']
-      },
       js: {
         options: { livereload: true },
         files: ['lib/*.js'],
@@ -29,8 +25,13 @@ module.exports = function(grunt) {
       },
       html: {
         options: { livereload: true },
-        files: ['example.html', 'template.html'],
+        files: ['example/index.html'],
         tasks: ['uglify']
+      },
+      str2js: {
+        options: { livereload: true },
+        files: ['templates/template.html', 'css/main.css'],
+        tasks: ['str2js:build']
       }
     },
     sass: {
@@ -40,18 +41,10 @@ module.exports = function(grunt) {
         }
       }
     },
-    jst: {
-      compile: {
-        options: {
-        },
-        files: {
-          'lib/templates.js': ['lib/*.html']
-        }
-      }
-    },
     uglify: {
       options: {
-        beautify: true
+        beautify: true,
+        mangle: false
       },
       compress: {
         files: {
@@ -81,7 +74,7 @@ module.exports = function(grunt) {
         namespace: 'CMNTTMPL'
       },
       build: {
-        'lib/templates.js': ['lib/template.html']
+        'lib/templates.js': ['templates/template.html', 'css/main.css']
       }
     }
   });
