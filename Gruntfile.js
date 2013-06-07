@@ -13,10 +13,6 @@ module.exports = function(grunt) {
         files: ['lib/*.js', 'test/*.spec.js'],
         tasks: ['karma:unit:run']
       },
-      jst: {
-        files: ['lib/*.html'],
-        tasks: ['jst', 'uglify']
-      },
       js: {
         options: { livereload: true },
         files: ['lib/*.js'],
@@ -29,8 +25,13 @@ module.exports = function(grunt) {
       },
       html: {
         options: { livereload: true },
-        files: ['example.html', 'template.html'],
+        files: ['example/index.html'],
         tasks: ['uglify']
+      },
+      str2js: {
+        options: { livereload: true },
+        files: ['templates/template.html', 'css/main.css'],
+        tasks: ['str2js']
       }
     },
     sass: {
@@ -40,18 +41,10 @@ module.exports = function(grunt) {
         }
       }
     },
-    jst: {
-      compile: {
-        options: {
-        },
-        files: {
-          'lib/templates.js': ['lib/*.html']
-        }
-      }
-    },
     uglify: {
       options: {
-        beautify: true
+        beautify: true,
+        mangle: false
       },
       compress: {
         files: {
@@ -77,11 +70,8 @@ module.exports = function(grunt) {
       }
     },
     str2js: {
-      options: {
-        namespace: 'CMNTTMPL'
-      },
-      build: {
-        'lib/templates.js': ['lib/template.html']
+      CMNTTMPL: {
+        'lib/templates.js': ['templates/template.html', 'css/main.css']
       }
     }
   });
@@ -95,7 +85,7 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-string-to-js');
 
   // Default task.
-  grunt.registerTask('default', ['sass:dev', 'str2js:build', 'uglify']);
+  grunt.registerTask('default', ['sass:dev', 'str2js', 'uglify']);
   grunt.registerTask('watch-test', ['karma:unit', 'watch:karma']);
 
 };
