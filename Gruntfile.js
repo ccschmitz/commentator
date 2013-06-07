@@ -31,7 +31,7 @@ module.exports = function(grunt) {
       str2js: {
         options: { livereload: true },
         files: ['templates/template.html', 'css/main.css'],
-        tasks: ['str2js:build']
+        tasks: ['str2js']
       }
     },
     sass: {
@@ -70,10 +70,7 @@ module.exports = function(grunt) {
       }
     },
     str2js: {
-      options: {
-        namespace: 'CMNTTMPL'
-      },
-      build: {
+      CMNTTMPL: {
         'lib/templates.js': ['templates/template.html', 'css/main.css']
       }
     }
@@ -88,7 +85,7 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-string-to-js');
 
   // Default task.
-  grunt.registerTask('default', ['sass:dev', 'str2js:build', 'uglify']);
+  grunt.registerTask('default', ['sass:dev', 'str2js', 'uglify']);
   grunt.registerTask('watch-test', ['karma:unit', 'watch:karma']);
 
 };
