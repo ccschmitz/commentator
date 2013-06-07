@@ -51,4 +51,8 @@ describe('utils', function() {
     expect(utils.overlaps_comment(range, node, comments)).toBeTruthy();
   });
 
+  it('escapes newline', function() {
+    expect(utils.escapeSpecialChars('\n')).toEqual('\\n');
+  });
+
 });

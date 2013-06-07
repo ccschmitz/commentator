@@ -7,8 +7,15 @@ describe('comments', function() {
     Comment = CMNT.Comment;
     comments = CMNT.comments;
     sock = CMNT.sock;
+    
+    // Create necessary node to apply selection to 
+    var div = document.createElement('div');
+    div.id = 'content';
+    div.innerText = 'TEST TEXT';
+    document.body.appendChild(div);
+    
     server_e = {
-      data: '{"context":"[{\"characterRange\":{\"start\":0,\"end\":5},\"backward\":false}]","text":"asdf\n","node":"content"}',
+      data: '{"type":"new-comment","context":[{"characterRange":{"start":1,"end":5},"backward":false}],"text":"a\\n","node":"content"}',
       type: 'message'
     };
   });
@@ -18,6 +25,12 @@ describe('comments', function() {
     expect(comments).toBeDefined();
     expect(sock).toBeDefined();
     expect(sock.onmessage).toBeDefined();
+  });
+
+  it('adds a comment on sock event new-comment', function(){
+    expect(comments).toEqual({});
+    sock.onmessage(server_e);
+    expect(comments['commentator-1-5-content']).toBeDefined();
   });
 
 });
