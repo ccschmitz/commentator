@@ -30,7 +30,7 @@ module.exports = function(grunt) {
       },
       str2js: {
         options: { livereload: true },
-        files: ['templates/template.html', 'css/main.css'],
+        files: ['templates/*.html', 'css/main.css'],
         tasks: ['str2js']
       }
     },
@@ -71,7 +71,9 @@ module.exports = function(grunt) {
     },
     str2js: {
       CMNTTMPL: {
-        'lib/templates.js': ['templates/template.html', 'css/main.css']
+        'lib/templates.js': ['templates/dialog.html',
+                             'templates/pop.html',
+                             'css/main.css']
       }
     }
   });
