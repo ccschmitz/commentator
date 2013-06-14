@@ -54,11 +54,12 @@ module.exports = function(grunt) {
             'vendor/rangy-cssclassapplier.js',
             'vendor/rangy-highlighter.js',
             'vendor/rangy-textrange.js',
+            'lib/templates.js',
             'lib/main.js',
+            'lib/utils.js',
             'lib/comments.js',
             'lib/dialog.js',
-            'lib/templates.js',
-            'lib/utils.js'
+            'lib/toolbar.js'
             ]
         }
       }
