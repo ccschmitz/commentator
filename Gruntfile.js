@@ -30,7 +30,7 @@ module.exports = function(grunt) {
       },
       str2js: {
         options: { livereload: true },
-        files: ['templates/template.html', 'css/main.css'],
+        files: ['templates/*.html', 'css/main.css'],
         tasks: ['str2js']
       }
     },
@@ -54,11 +54,12 @@ module.exports = function(grunt) {
             'vendor/rangy-cssclassapplier.js',
             'vendor/rangy-highlighter.js',
             'vendor/rangy-textrange.js',
+            'lib/templates.js',
             'lib/main.js',
+            'lib/utils.js',
             'lib/comments.js',
             'lib/dialog.js',
-            'lib/templates.js',
-            'lib/utils.js'
+            'lib/toolbar.js'
             ]
         }
       }
@@ -71,7 +72,9 @@ module.exports = function(grunt) {
     },
     str2js: {
       CMNTTMPL: {
-        'lib/templates.js': ['templates/template.html', 'css/main.css']
+        'lib/templates.js': ['templates/dialog.html',
+                             'templates/pop.html',
+                             'css/main.css']
       }
     }
   });
