@@ -4,7 +4,7 @@
 
 ## Installation
 
-    $ component install ccschmitz/commentator
+    $ npm install
 
 To automatically compile your project when a file updates:
 
